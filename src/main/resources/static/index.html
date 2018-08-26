@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+
+    <title>Anguchat</title>
+</head>
+<body>
+<div>Hello there</div>
+
+<div ng-app="anguchatApp" ng-controller="anguchatCtrl">
+    <input type="text" ng-model="msg">
+    <button ng-click="sendMsg()">CLICK</button>
+    <br/>
+    <div>{{result}}</div>
+    <br/>
+    <div>{{msg}}</div>
+</div>
+
+<script>
+    var app = angular.module('anguchatApp', []);
+    var okSign = "&#10003;";
+    app.controller('anguchatCtrl', function ($scope, $http) {
+        $scope.sendMsg = function () {
+            $http({
+                method: "POST",
+                url: "message",
+                data: {msg: $scope.msg}
+            }).then(function ok(value) {
+                    $scope.result = "ok";
+                    $scope.msg = "";
+                },
+                function notOK(reason) {
+                    $scope.result = "fail";
+                })
+
+        }
+    });
+
+
+</script>
+</body>
+</html>
