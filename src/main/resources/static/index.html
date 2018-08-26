@@ -10,26 +10,26 @@
     <title>Anguchat</title>
 </head>
 <body>
-<div>Hello there</div>
+<div class="text-center">Hello there</div>
 
 <div ng-app="anguchatApp" ng-controller="anguchatCtrl">
 
     <div class="text-center">
 
-        <ul>
-            <li ng-repeat='(key, value) in chatRoom'>
-                <span>{{value}}</span>
-            </li>
-        </ul>
+        <div style="font-size: 1.8em;" class="row" ng-repeat='(key, value) in chatRoom'>
+            <span>{{value}}</span>
+        </div>
+
 
     </div>
     <br/>
-    <input type="text" ng-model="msg">
-    <button ng-click="sendMsg()">CLICK</button>
-    <br/>
+    <form class="text-center" target="#">
+        <input type="text" ng-model="msg">
+        <button ng-click="sendMsg()">SEND</button>
+        <br/>
+    </form>
     <div>{{result}}</div>
     <br/>
-    <div>{{msg}}</div>
 </div>
 
 <script>
@@ -43,7 +43,7 @@
                     $scope.chatRoom = value.data;
                 },
                 function notOK(reason) {
-                    $scope.result = "fail";
+                    $scope.result = "Error";
                 });
         };
         $scope.sendMsg = function () {
@@ -52,14 +52,15 @@
                 url: "message",
                 data: {msg: $scope.msg}
             }).then(function ok(value) {
-                    $scope.result = "ok";
                     $scope.msg = "";
                 },
                 function notOK(reason) {
-                    $scope.result = "fail";
+                    $scope.result = "Error";
                 })
         };
-        $interval(function(){askForChatRoom()}, 5000)
+        $interval(function () {
+            askForChatRoom()
+        }, 5000)
     });
 
 
