@@ -17,6 +17,11 @@ public class MainChatService {
         return chatRoom;
     }
 
+    public Long actualNewestID(){
+        if (chatRoom.keySet().isEmpty()) return 0L;
+        return Collections.max(chatRoom.keySet());
+    }
+
     public void addMessage(String msg) {
         LocalDateTime localDateTime = LocalDateTime.now();
         String msgWithTime = localDateTime.toLocalTime().toString().concat("   ".concat(msg));

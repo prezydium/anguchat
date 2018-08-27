@@ -29,18 +29,25 @@
         <br/>
     </form>
     <div>{{result}}</div>
+    <div>{{maxId}}</div>
     <br/>
 </div>
 
 <script>
     var app = angular.module('anguchatApp', []);
     app.controller('anguchatCtrl', function ($scope, $http, $interval) {
+        $scope.maxId = -1;
         function askForChatRoom() {
             $http({
-                method: "GET",
-                url: "chat"
+                method: "POST",
+                url: "chat",
+                data: {lastId: $scope.maxId}
             }).then(function ok(value) {
-                    $scope.chatRoom = value.data;
+                    if (value.status === 200){
+                        $scope.chatRoom = value.data;
+                        var keys = Object.keys($scope.chatRoom);
+                        $scope.maxId = Math.max.apply(Math, keys);
+                    }
                 },
                 function notOK(reason) {
                     $scope.result = "Error";
@@ -60,7 +67,8 @@
         };
         $interval(function () {
             askForChatRoom()
-        }, 5000)
+        }, 5000);
+
     });
 
 
