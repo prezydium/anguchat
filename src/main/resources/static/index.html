@@ -2,36 +2,29 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.js"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="https://unpkg.com/@uirouter/angularjs@1.0.20/release/angular-ui-router.js"></script>
     <script src="script/chat.js"></script>
+
     <title>Anguchat</title>
 </head>
 <body>
 <div class="text-center">Hello there</div>
 
-<div ng-app="anguchatApp" ng-controller="anguchatCtrl">
+<div ng-app="anguchatApp">
 
     <div class="text-center">
+        <a class="btn" ui-sref="chat">Main Chat Room</a>
+        <a class="btn" ui-sref="kitty">Random Kitty</a>
+        <a class="btn" ui-sref="about">About</a>
 
-        <div style="font-size: 1.8em;" class="row" ng-repeat='(key, value) in chatRoom'>
-            <span>{{value}}</span>
-        </div>
+        <ui-view></ui-view>
 
     </div>
-    <br/>
-    <form class="text-center" target="#">
-        <input type="text" ng-model="msg">
-        <button ng-click="sendMsg()">SEND</button>
-        <br/>
-    </form>
-    <div>{{result}}</div>
-    <div>{{maxId}}</div>
-    <br/>
-</div>
 
 </body>
 </html>

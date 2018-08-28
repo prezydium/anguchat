@@ -1,0 +1,18 @@
+<div >
+<div class="text-center" >
+    <div style="font-size: 1.8em;" class="row" ng-repeat='(key, value) in chatRoom'>
+        <span>{{value}}</span>
+    </div>
+</div>
+<br/>
+<form class="text-center" target="#">
+    <input type="text" ng-model="msg">
+    <button ng-click="sendMsg()">SEND</button>
+    <br/>
+</form>
+<div>{{result}}</div>
+<div>{{msg}}</div>
+<div>{{maxId}}</div>
+<br/>
+    Loaded chat
+</div>
