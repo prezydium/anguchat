@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="script/chat.js"></script>
     <title>Anguchat</title>
 </head>
 <body>
@@ -20,7 +21,6 @@
             <span>{{value}}</span>
         </div>
 
-
     </div>
     <br/>
     <form class="text-center" target="#">
@@ -33,45 +33,5 @@
     <br/>
 </div>
 
-<script>
-    var app = angular.module('anguchatApp', []);
-    app.controller('anguchatCtrl', function ($scope, $http, $interval) {
-        $scope.maxId = -1;
-        function askForChatRoom() {
-            $http({
-                method: "POST",
-                url: "chat",
-                data: {lastId: $scope.maxId}
-            }).then(function ok(value) {
-                    if (value.status === 200){
-                        $scope.chatRoom = value.data;
-                        var keys = Object.keys($scope.chatRoom);
-                        $scope.maxId = Math.max.apply(Math, keys);
-                    }
-                },
-                function notOK(reason) {
-                    $scope.result = "Error";
-                });
-        };
-        $scope.sendMsg = function () {
-            $http({
-                method: "POST",
-                url: "message",
-                data: {msg: $scope.msg}
-            }).then(function ok(value) {
-                    $scope.msg = "";
-                },
-                function notOK(reason) {
-                    $scope.result = "Error";
-                })
-        };
-        $interval(function () {
-            askForChatRoom()
-        }, 5000);
-
-    });
-
-
-</script>
 </body>
 </html>
