@@ -1,16 +1,14 @@
 
-<div class="text-center" style="overflow-y: scroll; max-height:50%; min-height:50%; max-width:border-box;word-break: break-all; word-wrap: break-word;">
-    <div style="font-size: 1.8em;" class="row" ng-repeat='(key, value) in chatRoom'>
-        <span>{{value}}</span>
-    </div>
+<div class="text-left" style="overflow-y: scroll; max-height: 50%; max-width:border-box;word-break: break-all; word-wrap: break-word;">
+    <span style="font-size: 1.8em;" ng-repeat='(key, value) in chatRoom'>
+        {{value}}<br/>
+    </span>
 </div>
 <br/>
-<div class="input-group mb-3">
-    <input type="text" class="form-control" placeholder="Enter message" aria-label="Message" aria-describedby="basic-addon2" ng-model="msg">
-    <div class="input-group-append" ng-click="sendMsg()">
-        <span class="input-group-text" id="basic-addon2">Send</span>
-    </div>
-</div>
+<form class="input-group mb-3">
+    <input id="msgTextfield" type="text" class="form-control" placeholder="Enter message" aria-label="Message" aria-describedby="basic-addon2" ng-model="msg">
+    <input id="msgButton" type="button" class="input-group-append" ng-click="sendMsg()" value="Send">
+</form>
 <div>{{result}}</div>
 <div>{{msg}}</div>
 <div>{{maxId}}</div>

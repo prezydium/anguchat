@@ -39,6 +39,14 @@ angular.module('anguchatApp').component('chatroom', {
         $interval(function () {
             askForChatRoom()
         }, 5000);
+        var input = document.getElementById("msgTextfield");
+
+        input.addEventListener("keyup", function(event) {
+            event.preventDefault();
+            if (event.keyCode === 13) {
+                $scope.sendMsg();
+            }
+        });
         askForChatRoom();
     }
 });
@@ -73,3 +81,4 @@ app.config(function ($stateProvider) {
     $stateProvider.state(kittyState);
     $stateProvider.state(aboutState);
 });
+
