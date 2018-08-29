@@ -1,18 +1,20 @@
-<div >
-<div class="text-center" >
+
+<div class="text-center" style="overflow-y: scroll; max-height:50%; min-height:50%; max-width:border-box;word-break: break-all; word-wrap: break-word;">
     <div style="font-size: 1.8em;" class="row" ng-repeat='(key, value) in chatRoom'>
         <span>{{value}}</span>
     </div>
 </div>
 <br/>
-<form class="text-center" target="#">
-    <input type="text" ng-model="msg">
-    <button ng-click="sendMsg()">SEND</button>
-    <br/>
-</form>
+<div class="input-group mb-3">
+    <input type="text" class="form-control" placeholder="Enter message" aria-label="Message" aria-describedby="basic-addon2" ng-model="msg">
+    <div class="input-group-append" ng-click="sendMsg()">
+        <span class="input-group-text" id="basic-addon2">Send</span>
+    </div>
+</div>
 <div>{{result}}</div>
 <div>{{msg}}</div>
 <div>{{maxId}}</div>
 <br/>
+<div>
     Loaded chat
 </div>

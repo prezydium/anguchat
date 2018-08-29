@@ -4,28 +4,31 @@
     <meta charset="UTF-8">
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.js"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+
     <script src="https://unpkg.com/@uirouter/angularjs@1.0.20/release/angular-ui-router.js"></script>
     <script src="script/chat.js"></script>
-
+    <link rel="stylesheet" type="text/css" href="styles/style1.css">
     <title>Anguchat</title>
 </head>
 <body>
-<div class="text-center">Hello there</div>
+<div class="container angu-body">
+    <div class="text-center">Hello there</div>
 
-<div ng-app="anguchatApp">
+    <div ng-app="anguchatApp">
 
-    <div class="text-center">
-        <a class="btn" ui-sref="chat">Main Chat Room</a>
-        <a class="btn" ui-sref="kitty">Random Kitty</a>
-        <a class="btn" ui-sref="about">About</a>
-        <div class="text-center" style="margin-left: 10%; margin-right: 10%; background: antiquewhite">
+        <div class="text-center">
+            <a class="btn" ui-sref="chat">Main Chat Room</a>
+            <a class="btn" ui-sref="kitty">Random Kitty</a>
+            <a class="btn" ui-sref="about">About</a>
+            <div class="text-center angu-main-panel">
 
-        <ui-view></ui-view>
+                <ui-view></ui-view>
+            </div>
         </div>
     </div>
-
 </body>
 </html>
