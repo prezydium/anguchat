@@ -24,10 +24,13 @@ angular.module('anguchatApp').component('chatroom', {
                 });
         }
 
-        $scope.sendMsg = function () {
+        $scope.sendMsg = function (special) {
             if ($scope.nick == null || $scope.nick === "") {
                 $scope.result = "Enter nick!";
                 return false;
+            }
+            if (special != null){
+                $scope.msg = special;
             }
             $http({
                 method: "POST",
@@ -43,10 +46,13 @@ angular.module('anguchatApp').component('chatroom', {
                     $scope.result = "Error" + reason.toString();
                 })
         };
+        $scope.sendCat = function () {
+            $scope.sendMsg("🐱");
+        };
         $interval(function () {
             askForChatRoom();
-            if ($scope.autoScroll.isOn) {
-                var elem = document.getElementById('chat-room');
+            var elem = document.getElementById('chat-room');
+            if ($scope.autoScroll.isOn && elem !== null) {
                 elem.scrollTop = elem.scrollHeight;
             }
         }, 1000);
@@ -61,11 +67,15 @@ angular.module('anguchatApp').component('chatroom', {
         askForChatRoom();
     }
 });
+
 angular.module('anguchatApp').component('kitty', {
     templateUrl: 'kitty.html',
-
     controller: function ($scope, $http) {
-
+    }
+});
+angular.module('anguchatApp').component('about', {
+    templateUrl: 'about.html',
+    controller: function ($scope, $interval) {
     }
 });
 
@@ -85,7 +95,7 @@ app.config(function ($stateProvider) {
     var aboutState = {
         name: 'about',
         url: '/about',
-        template: '<h3>TODO</h3>'
+        component: 'about'
     };
 
     $stateProvider.state(chatState);
@@ -93,3 +103,10 @@ app.config(function ($stateProvider) {
     $stateProvider.state(aboutState);
 });
 
+function miau() {
+    var a = document.getElementById("cat");
+    a.innerText = "MIAUUUU";
+    setTimeout(function () {
+        a.innerText = "🐱";
+    }, 2000);
+};

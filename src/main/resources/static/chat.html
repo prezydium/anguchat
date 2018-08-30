@@ -7,8 +7,10 @@
 <br/>
 <form class="input-group mb-3">
     <input id="msgTextfield" type="text" class="form-control" placeholder="Enter message" aria-label="Message" aria-describedby="basic-addon2" ng-model="msg">
-    <input id="msgButton" type="button" class="input-group-append" ng-click="sendMsg()" value="Send">
+    <input id="msgButton" type="button" class="input-group-append" ng-click="sendMsg()" value="Send message">
+    <input id="catButton" type="button" class="input-group-append" ng-click="sendCat()" value="Send cat">
 </form>
+
 <input type="checkbox" ng-model="autoScroll.isOn"> Auto scroll chat
 <input id ="nickTextField" type="text" placeholder="Enter nick" ng-model="nick" >
 <div id="errors">{{result}}</div>
