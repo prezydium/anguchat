@@ -4,67 +4,50 @@ angular.module('anguchatApp').component('chatroom', {
     templateUrl: 'chat.html',
 
     controller: function ($scope, $http, $interval) {
-        $scope.maxId = -1;
         $scope.autoScroll = {isOn: true};
+        var stompClient = null;
 
-        function askForChatRoom() {
-            $http({
-                method: "POST",
-                url: "chat",
-                data: {lastId: $scope.maxId}
-            }).then(function ok(value) {
-                    if (value.status === 200) {
-                        $scope.chatRoom = value.data;
-                        var keys = Object.keys($scope.chatRoom);
-                        $scope.maxId = Math.max.apply(Math, keys);
-                    }
-                },
-                function notOK(reason) {
-                    $scope.result = "Error";
+        function connect() {
+            var socket = new SockJS('/chatsoc');
+            stompClient = Stomp.over(socket);
+            stompClient.connect({}, function(frame) {
+                console.log('Connected: ' + frame);
+                stompClient.subscribe('/topic/messages', function(messageOutput) {
+                    showMessageOutput(JSON.parse(messageOutput.body));
                 });
+            });
         }
 
-        $scope.sendMsg = function (special) {
-            if ($scope.nick == null || $scope.nick === "") {
-                $scope.result = "Enter nick!";
-                return false;
+        function disconnect() {
+            if(stompClient != null) {
+                stompClient.disconnect();
             }
-            if (special != null){
-                $scope.msg = special;
-            }
-            $http({
-                method: "POST",
-                url: "message",
-                data: {
-                    msg: this.msg,
-                    nick: this.nick
-                }
-            }).then(function ok(value) {
-                    $scope.msg = "";
-                },
-                function notOK(reason) {
-                    $scope.result = "Error" + reason.toString();
-                })
-        };
-        $scope.sendCat = function () {
-            $scope.sendMsg("🐱");
-        };
-        $interval(function () {
-            askForChatRoom();
-            var elem = document.getElementById('chat-room');
-            if ($scope.autoScroll.isOn && elem !== null) {
-                elem.scrollTop = elem.scrollHeight;
-            }
-        }, 1000);
-        var input = document.getElementById("msgTextfield");
+            setConnected(false);
+            console.log("Disconnected");
+        }
 
+        function sendMessage() {
+
+            stompClient.send("/app/chatsoc", {},
+                JSON.stringify({'nick':$scope.nick, 'msgText':$scope.msgText}));
+        }
+
+        function showMessageOutput(messageOutput) {
+            var chat = document.getElementById('chat-room');
+            var p = document.createElement('p');
+            p.appendChild(document.createTextNode(messageOutput.nick + ": "
+                + messageOutput.msgText + " (" + messageOutput.time + ")"));
+            chat.appendChild(p);
+        }
+        var input = document.getElementById("msgTextfield");
         input.addEventListener("keyup", function (event) {
             event.preventDefault();
             if (event.keyCode === 13) {
                 $scope.sendMsg();
             }
         });
-        askForChatRoom();
+        connect();
+        document.getElementById ("msgButton").addEventListener ("click", sendMessage, false);
     }
 });
 
