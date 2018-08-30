@@ -10,3 +10,14 @@ body {
     padding-left: 10px;
     padding-right: 10px;
 }
+
+.chat-window {
+    height: 25em;
+    line-height: 1.5em;
+    overflow: hidden;
+    overflow-y: scroll;
+    max-height: 50%;
+    max-width: border-box;
+    word-break: break-all;
+    word-wrap: break-word;
+}

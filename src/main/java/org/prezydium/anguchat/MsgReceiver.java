@@ -23,20 +23,17 @@ public class MsgReceiver {
         this.mainChatService = mainChatService;
     }
 
-    @RequestMapping(path = "test", method = RequestMethod.POST)
-    public ResponseEntity<String> test(HttpServletRequest httpRequest) {
-        System.out.println(httpRequest);
-        return new ResponseEntity<>("{ \"records\":[ {\"Name\":\"Alfreds Futterkiste\",\"City\":\"Berlin\",\"Country\":\"Germany\"}, {\"Name\":\"Ana Trujillo Emparedados y helados\",\"City\":\"México D.F.\",\"Country\":\"Mexico\"}, {\"Name\":\"Antonio Moreno Taquería\",\"City\":\"México D.F.\",\"Country\":\"Mexico\"}, {\"Name\":\"Around the Horn\",\"City\":\"London\",\"Country\":\"UK\"}, {\"Name\":\"B's Beverages\",\"City\":\"London\",\"Country\":\"UK\"}, {\"Name\":\"Berglunds snabbköp\",\"City\":\"Luleå\",\"Country\":\"Sweden\"}, {\"Name\":\"Blauer See Delikatessen\",\"City\":\"Mannheim\",\"Country\":\"Germany\"}, {\"Name\":\"Blondel père et fils\",\"City\":\"Strasbourg\",\"Country\":\"France\"}, {\"Name\":\"Bólido Comidas preparadas\",\"City\":\"Madrid\",\"Country\":\"Spain\"}, {\"Name\":\"Bon app'\",\"City\":\"Marseille\",\"Country\":\"France\"}, {\"Name\":\"Bottom-Dollar Marketse\",\"City\":\"Tsawassen\",\"Country\":\"Canada\"}, {\"Name\":\"Cactus Comidas para llevar\",\"City\":\"Buenos Aires\",\"Country\":\"Argentina\"}, {\"Name\":\"Centro comercial Moctezuma\",\"City\":\"México D.F.\",\"Country\":\"Mexico\"}, {\"Name\":\"Chop-suey Chinese\",\"City\":\"Bern\",\"Country\":\"Switzerland\"}, {\"Name\":\"Comércio Mineiro\",\"City\":\"São Paulo\",\"Country\":\"Brazil\"} ] }", HttpStatus.ACCEPTED);
-    }
-
     @RequestMapping(path = "message", method = RequestMethod.POST)
     public ResponseEntity<String> addMessage(@RequestBody JsonNode incomingMsg) throws IOException, ServletException {
         if (incomingMsg.get("msg") == null){
             return new ResponseEntity<>("Error - empty msg", HttpStatus.BAD_REQUEST);
         }
+        if (incomingMsg.get("nick") == null) {
+            return new ResponseEntity<>("Error - empty nick", HttpStatus.BAD_REQUEST);
+        }
         String message = incomingMsg.get("msg").asText("");
-        System.out.println(message);
-        mainChatService.addMessage(message);
+        String nick = incomingMsg.get("nick").asText("");
+        mainChatService.addMessage(nick + ": " + message);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 }

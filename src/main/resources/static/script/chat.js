@@ -5,6 +5,7 @@ angular.module('anguchatApp').component('chatroom', {
 
     controller: function ($scope, $http, $interval) {
         $scope.maxId = -1;
+        $scope.autoScroll = {isOn: true};
 
         function askForChatRoom() {
             $http({
@@ -24,24 +25,34 @@ angular.module('anguchatApp').component('chatroom', {
         }
 
         $scope.sendMsg = function () {
+            if ($scope.nick == null || $scope.nick === "") {
+                $scope.result = "Enter nick!";
+                return false;
+            }
             $http({
                 method: "POST",
                 url: "message",
-                data: {msg: this.msg}
+                data: {
+                    msg: this.msg,
+                    nick: this.nick
+                }
             }).then(function ok(value) {
                     $scope.msg = "";
-
                 },
                 function notOK(reason) {
                     $scope.result = "Error" + reason.toString();
                 })
         };
         $interval(function () {
-            askForChatRoom()
-        }, 5000);
+            askForChatRoom();
+            if ($scope.autoScroll.isOn) {
+                var elem = document.getElementById('chat-room');
+                elem.scrollTop = elem.scrollHeight;
+            }
+        }, 1000);
         var input = document.getElementById("msgTextfield");
 
-        input.addEventListener("keyup", function(event) {
+        input.addEventListener("keyup", function (event) {
             event.preventDefault();
             if (event.keyCode === 13) {
                 $scope.sendMsg();
