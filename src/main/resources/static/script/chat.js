@@ -3,9 +3,13 @@ var app = angular.module('anguchatApp', ['ui.router']);
 angular.module('anguchatApp').component('chatroom', {
     templateUrl: 'chat.html',
 
-    controller: function ($scope, $http, $interval) {
+    controller: function ($scope, $interval) {
+
         $scope.autoScroll = {isOn: true};
+
         var stompClient = null;
+
+        var chatRoom = document.getElementById('chat-room');
 
         function connect() {
             var socket = new SockJS('/chatsoc');
@@ -27,9 +31,19 @@ angular.module('anguchatApp').component('chatroom', {
         }
 
         function sendMessage() {
+            if ($scope.nick == null || $scope.nick === ""){
+                $scope.errorMsg = "Please enter nick";
+                document.getElementById("errors").style.display = 'block';
+            } else if ($scope.msgText == null || $scope.msgText === ""){
+                $scope.errorMsg = "Message cannot be empty";
+                document.getElementById("errors").style.display = 'block';
+            } else {
+                stompClient.send("/app/chatsoc", {},
+                    JSON.stringify({'nick': $scope.nick, 'msgText': $scope.msgText}));
+                document.getElementById("errors").style.display = 'none';
+                $scope.msgText = "";
 
-            stompClient.send("/app/chatsoc", {},
-                JSON.stringify({'nick':$scope.nick, 'msgText':$scope.msgText}));
+            }
         }
 
         function showMessageOutput(messageOutput) {
@@ -39,15 +53,37 @@ angular.module('anguchatApp').component('chatroom', {
                 + messageOutput.msgText + " (" + messageOutput.time + ")"));
             chat.appendChild(p);
         }
+
+        function sendCat() {
+            if ($scope.nick == null || $scope.nick === ""){
+                $scope.errorMsg = "Please enter nick";
+                document.getElementById("errors").style.display = 'block';
+            } else {
+                stompClient.send("/app/chatsoc", {},
+                    JSON.stringify({'nick': $scope.nick, 'msgText': '🐱'}));
+                document.getElementById("errors").style.display = 'none';
+                $scope.msgText = "";
+            }
+        }
+
+
         var input = document.getElementById("msgTextfield");
         input.addEventListener("keyup", function (event) {
             event.preventDefault();
             if (event.keyCode === 13) {
-                $scope.sendMsg();
+                sendMessage();
             }
         });
         connect();
         document.getElementById ("msgButton").addEventListener ("click", sendMessage, false);
+        document.getElementById ("catButton").addEventListener ("click", sendCat, false);
+
+        $interval(function () {
+            var elem = document.getElementById('chat-room');
+            if ($scope.autoScroll.isOn && elem !== null) {
+                elem.scrollTop = elem.scrollHeight;
+            }
+        }, 500)
     }
 });
 
