@@ -1,18 +1,18 @@
 
 <div id="chat-room" class="text-left chat-window">
-    <span style="font-size: 1.8em;" ng-repeat='(key, value) in chatRoom'>
-        {{value}}<br/>
-    </span>
+
 </div>
 <br/>
 <form class="input-group mb-3">
-    <input id="msgTextfield" type="text" class="form-control" placeholder="Enter message" aria-label="Message" aria-describedby="basic-addon2" ng-model="msg">
-    <input id="msgButton" type="button" class="input-group-append" ng-click="sendMsg()" value="Send message">
-    <input id="catButton" type="button" class="input-group-append" ng-click="sendCat()" value="Send cat">
+    <input id="msgTextfield" type="text" class="form-control" placeholder="Enter message" aria-label="Message" aria-describedby="basic-addon2" ng-model="msgText">
+    <input id="msgButton" type="button" class="input-group-append" value="Send message">
+    <input id="catButton" type="button" class="input-group-append" value="Send cat">
 </form>
 
-<input type="checkbox" ng-model="autoScroll.isOn"> Auto scroll chat
-<input id ="nickTextField" type="text" placeholder="Enter nick" ng-model="nick" >
-<div id="errors">{{result}}</div>
-
+<input id="scrollTextBox" type="checkbox" ng-model="autoScroll.isOn"> Auto scroll chat
+<input id ="nickTextField" type="text" placeholder="Enter nick" ng-model="nick" value="">
+<div id="errors" class="alert alert-dismissible alert-danger">
+    <strong>Error!</strong> {{errorMsg}}
+</div>
+Error not in div {{errorMsg}}
 <br/>
