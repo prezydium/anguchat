@@ -22,7 +22,7 @@ angular.module('anguchatApp').component('chatroom', {
             });
         }
 
-        function disconnect() {
+        this.$onDestroy = function disconnect() {
             if (stompClient != null) {
                 stompClient.disconnect();
             }
