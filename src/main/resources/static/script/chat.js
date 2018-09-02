@@ -3,7 +3,7 @@ var app = angular.module('anguchatApp', ['ui.router']);
 angular.module('anguchatApp').component('chatroom', {
     templateUrl: 'chat.html',
 
-    controller: function ($scope, $interval) {
+    controller: function ($scope, $interval, $http) {
 
         $scope.autoScroll = {isOn: true};
 
@@ -14,16 +14,16 @@ angular.module('anguchatApp').component('chatroom', {
         function connect() {
             var socket = new SockJS('/chatsoc');
             stompClient = Stomp.over(socket);
-            stompClient.connect({}, function(frame) {
+            stompClient.connect({}, function (frame) {
                 console.log('Connected: ' + frame);
-                stompClient.subscribe('/topic/messages', function(messageOutput) {
+                stompClient.subscribe('/topic/messages', function (messageOutput) {
                     showMessageOutput(JSON.parse(messageOutput.body));
                 });
             });
         }
 
         function disconnect() {
-            if(stompClient != null) {
+            if (stompClient != null) {
                 stompClient.disconnect();
             }
             setConnected(false);
@@ -31,10 +31,10 @@ angular.module('anguchatApp').component('chatroom', {
         }
 
         function sendMessage() {
-            if ($scope.nick == null || $scope.nick === ""){
+            if ($scope.nick == null || $scope.nick === "") {
                 $scope.errorMsg = "Please enter nick";
                 document.getElementById("errors").style.display = 'block';
-            } else if ($scope.msgText == null || $scope.msgText === ""){
+            } else if ($scope.msgText == null || $scope.msgText === "") {
                 $scope.errorMsg = "Message cannot be empty";
                 document.getElementById("errors").style.display = 'block';
             } else {
@@ -55,7 +55,7 @@ angular.module('anguchatApp').component('chatroom', {
         }
 
         function sendCat() {
-            if ($scope.nick == null || $scope.nick === ""){
+            if ($scope.nick == null || $scope.nick === "") {
                 $scope.errorMsg = "Please enter nick";
                 document.getElementById("errors").style.display = 'block';
             } else {
@@ -66,6 +66,29 @@ angular.module('anguchatApp').component('chatroom', {
             }
         }
 
+        function getHistory() {
+            $http({
+                method: "GET",
+                url: "history",
+                data: {}
+            }).then(function ok(value) {
+                    var chat = document.getElementById('chat-room');
+                    while(chat.firstChild){
+                        chat.removeChild(chat.firstChild);
+                    }
+                    var messages = value.data;
+                    for (var i = 0; i < messages.length; i++) {
+                        var p = document.createElement('p');
+                        p.appendChild(document.createTextNode(messages[i].nick + ": "
+                            + messages[i].msgText + " (" + messages[i].time + ")"));
+                        chat.appendChild(p)
+                    }
+                },
+                function notOK(reason) {
+                    $scope.result = "Error";
+                })
+        };
+
 
         var input = document.getElementById("msgTextfield");
         input.addEventListener("keyup", function (event) {
@@ -75,8 +98,9 @@ angular.module('anguchatApp').component('chatroom', {
             }
         });
         connect();
-        document.getElementById ("msgButton").addEventListener ("click", sendMessage, false);
-        document.getElementById ("catButton").addEventListener ("click", sendCat, false);
+        document.getElementById("historyButton").addEventListener("click", getHistory, false);
+        document.getElementById("msgButton").addEventListener("click", sendMessage, false);
+        document.getElementById("catButton").addEventListener("click", sendCat, false);
 
         $interval(function () {
             var elem = document.getElementById('chat-room');
