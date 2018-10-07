@@ -28,7 +28,7 @@ angular.module('anguchatApp').component('chatroom', {
             }
             setConnected(false);
             console.log("Disconnected");
-        }
+        };
 
         function sendMessage() {
             if ($scope.nick == null || $scope.nick === "") {
@@ -104,7 +104,7 @@ angular.module('anguchatApp').component('chatroom', {
 
         $interval(function () {
             var elem = document.getElementById('chat-room');
-            if ($scope.autoScroll.isOn && elem !== null) {
+            if ($scope.autoScroll.isOn === true && elem !== null) {
                 elem.scrollTop = elem.scrollHeight;
             }
         }, 500)
